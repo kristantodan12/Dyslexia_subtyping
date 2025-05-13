@@ -164,9 +164,9 @@ ui <- shinyUI(navbarPage(
 
 
         ##########################
-        ### Database ###
+        ### Dataset Exploration ###
         ##########################                 
-        tabPanel("Database", value = "DB",
+        tabPanel("Dataset Exploration", value = "DB",
             fluidRow(
                 column(12,
                     tabsetPanel(id = "nested_tabs_DB", type = "tabs",
@@ -248,9 +248,9 @@ ui <- shinyUI(navbarPage(
 
 
         ###########################
-        ### Explore the Dataset ###
+        ### Multiverse of Decision Steps ###
         ###########################
-        tabPanel("Explore the Dataset", value = "EX",
+        tabPanel("Multiverse of Decision Steps", value = "EX",
             tabsetPanel(id = "nested_tabs_EX", type = "tabs",
 
                         tabPanel("Descriptive Data: Univariate", value = "AU",
@@ -352,42 +352,43 @@ ui <- shinyUI(navbarPage(
         ###########################
         ###Additional Analyses ###
         ###########################
-        tabPanel("Subtypes and Prevalence", value = "TvS",
+        tabPanel("Subtype Result Explorer", value = "TvS",
             tabsetPanel(id = "nested_tabs_TvS", type = "tabs",
                 tabPanel("Theoretical Models and Subtypes", value = "TvS1",
                     fluidPage(
-                        helpText("Here is an interactive plot of the number of data entries yielding specific subtypes per 
-                        theoretical model. When you hover over a cell, it will show you the name of the specific subtype, the theoretical model, 
-                        and the corresponding number of data entries in the dataset. When you click the cell, the corresponding paper(s) 
-                        will be shown in the table below the interactive plot."),
+                    helpText(shiny::HTML("Here is an interactive plot of the number of data entries yielding specific subtypes (grouped by type presented in 
+                                            <span style='color:blue;'>blue color</span>) per theoretical model. When you hover over a cell, it will show you the name of the specific subtype, the theoretical model, 
+                                            and the corresponding number of data entries in the dataset. When you click the cell, the corresponding paper(s) 
+                                            will be shown in the table below the interactive plot.")),
                         plotlyOutput("heatmap1", height = "1200px"),  # Adjust the height
                         DTOutput("filtered_data_theory")  # Ensure the ID matches the server logic
                     )
                 ),
                 tabPanel("Language and Subtypes", value = "TvS2",  # Corrected value to be unique
                     fluidPage(
-                        helpText("Here is an interactive plot of the number of data entries yielding specific subtypes across the L1 
-                        of the sample of participants. When you hover over a cell, it will show you the name of the specific subtype, 
-                        the L1 of the sample of participants, and the corresponding number of data entries in the dataset. When you 
-                        click the cell, the corresponding paper(s) will be shown in the table below the interactive plot."),
+                        helpText(shiny::HTML("Here is an interactive plot of the number of data entries yielding specific subtypes (grouped by type presented in 
+                                            <span style='color:blue;'>blue color</span>) across the L1 
+                                            of the sample of participants. When you hover over a cell, it will show you the name of the specific subtype, 
+                                            the L1 of the sample of participants, and the corresponding number of data entries in the dataset. When you 
+                                            click the cell, the corresponding paper(s) will be shown in the table below the interactive plot.")),
                         plotlyOutput("heatmap2", height = "1200px"),  # Adjust the height
                         DTOutput("filtered_data_lang")  # Ensure the ID matches the server logic
                     )
                 ),
-                tabPanel("Subtype Prevalence", value = "TvS3",
-                    sidebarLayout(
-                        sidebarPanel(
-                            selectInput("prevalenceType", "Select Prevalence Type:", 
-                                        choices = c("Highest Prevalence", "Common Single Subtypes", "Common Subtype Sets")),
-                            width = 3 
-                        ),
-                        mainPanel(
-                            plotlyOutput("prevalencePlot", height = "800px"),
-                            DTOutput("paperTable"),
-                            width = 9 
-                        )
-                    )
-                )
+                # tabPanel("Subtype Prevalence", value = "TvS3",
+                #     sidebarLayout(
+                #         sidebarPanel(
+                #             selectInput("prevalenceType", "Select Prevalence Type:", 
+                #                         choices = c("Highest Prevalence", "Common Single Subtypes", "Common Subtype Sets")),
+                #             width = 3 
+                #         ),
+                #         mainPanel(
+                #             plotlyOutput("prevalencePlot", height = "800px"),
+                #             DTOutput("paperTable"),
+                #             width = 9 
+                #         )
+                #     )
+                # )
             )
         ),
 

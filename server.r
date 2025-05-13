@@ -38,7 +38,7 @@ shinyServer(function(input, output, session) {
     ###########################
 
     main_nodes <- data.frame(id = 1:4, 
-                            label = c("Home", "Database", "Explore the Dataset", "Subtypes and Prevalence"), 
+                            label = c("Home", "Dataset Exploration", "Multiverse of Decision Steps", "Subtype Result Explorer"), 
                             value = c(60, 60, 60, 60), 
                             title = "Click to see information", 
                             shape = "dot",
@@ -58,7 +58,7 @@ shinyServer(function(input, output, session) {
     })
 
     observeEvent(input$node_clicked, {
-        if (input$node_clicked == "Database") {
+        if (input$node_clicked == "Dataset Exploration") {
             subnodes <- data.frame(id = 5:8, 
                                     label = c("PRISMA Diagram", "List of Included Articles", "List of Variables", "Create Your Table"), 
                                     value = c(30, 30, 30, 30), 
@@ -71,7 +71,7 @@ shinyServer(function(input, output, session) {
             visNetworkProxy("network_home") %>%
                 visUpdateNodes(nodes = subnodes) %>%
                 visUpdateEdges(edges = subedges)
-        } else if (input$node_clicked == "Explore the Dataset") {
+        } else if (input$node_clicked == "Multiverse of Decision Steps") {
             subnodes <- data.frame(id = 9:12, 
                                 label = c("Descriptive Data: Univariate", "Descriptive Data: Bivariate", "Multiverse of Decision Steps", "Decision Map of Individual Article"), 
                                 value = c(30, 30, 30, 30), 
@@ -84,15 +84,15 @@ shinyServer(function(input, output, session) {
             visNetworkProxy("network_home") %>%
             visUpdateNodes(nodes = subnodes) %>%
             visUpdateEdges(edges = subedges)
-        } else if (input$node_clicked == "Subtypes and Prevalence") {
-            subnodes <- data.frame(id = 13:15, 
-                                label = c("Theoretical Model and Subtypes", "Language and Subtypes", "Subtype Prevalence"), 
-                                value = c(30, 30, 30), 
+        } else if (input$node_clicked == "Subtype Result Explorer") {
+            subnodes <- data.frame(id = 13:14,#15, 
+                                label = c("Theoretical Model and Subtypes", "Language and Subtypes"),# "Subtype Prevalence"), 
+                                value = c(30, 30),# 30), 
                                 title = "Click to see information", 
                                 shape = "dot", 
                                 color = "#a2df9d")
-            subedges <- data.frame(from = rep(4, 3), 
-                                to = 13:15)
+            subedges <- data.frame(from = rep(4, 2),#3), 
+                                to = 13:14)#15)
             
             visNetworkProxy("network_home") %>%
             visUpdateNodes(nodes = subnodes) %>%
@@ -100,9 +100,9 @@ shinyServer(function(input, output, session) {
         }
 
         info <- switch(input$node_clicked,
-            "Database" = "Check out the dataset of developmental dyslexia subtyping methods that were extracted from the papers included in the systematic literature review.",
-            "Explore the Dataset" = "Explore the descriptive data of the variables, relationships between variables, and the multiverse of decision steps in developmental dyslexia subtyping.",
-            "Subtypes and Prevalence" = "Check out the overview of the developmental dyslexia subtypes, their prevalence, and their relationships with the theoretical models for subtyping and participants’ language.",
+            "Dataset Exploration" = "Check out the dataset of developmental dyslexia subtyping methods that were extracted from the papers included in the systematic literature review.",
+            "Multiverse of Decision Steps" = "Explore the descriptive data of the variables, relationships between variables, and the multiverse of decision steps in developmental dyslexia subtyping.",
+            "Subtype Result Explorer" = "Check out the overview of the developmental dyslexia subtypes, their prevalence, and their relationships with the theoretical models for subtyping and participants’ language.",
             "PRISMA Diagram" = "Check out the PRISMA diagram for the steps taken to identify the academic papers that applied dyslexia subtyping methods in the systematic literature review.",
             "List of Included Articles" = "Check out the full list of the included papers in our systematic review.",
             "List of Variables" = "Check out the overview of all the variables available in our dataset.",
@@ -113,7 +113,7 @@ shinyServer(function(input, output, session) {
             "Decision Map of Individual Article" = "Examine the decision map of subtyping dyslexia in a selected individual paper.",
             "Theoretical Model and Subtypes" = "Examine the relationship between the theoretical models for subtyping and the dyslexia subtypes and their prevalence.",
             "Language and Subtypes" = "Examine the relationship between the language of the participants and the respective dyslexia subtypes and their prevalence.",
-            "Subtype Prevalence" = "Examine the prevalence of each of the dyslexia subtypes in the dataset.",
+            #"Subtype Prevalence" = "Examine the prevalence of each of the dyslexia subtypes in the dataset.",
             "Home" =  "Welcome to explore the multiverse of developmental dyslexia subtyping methods!"  # Default to home if no match
         )
 
@@ -129,9 +129,9 @@ shinyServer(function(input, output, session) {
 
     observeEvent(input$go_to_tab, {
         tab_value <- switch(input$node_clicked,
-            "Database" = "DB",
-            "Explore the Dataset" = "EX",
-            "Subtypes and Prevalence" = "TvS",
+            "Dataset Exploration" = "DB",
+            "Multiverse of Decision Steps" = "EX",
+            "Subtype Result Explorer" = "TvS",
             "PRISMA Diagram" = "PRISMA",
             "List of Included Articles" = "list_paper",
             "List of Variables" = "list_decisions",
@@ -140,9 +140,9 @@ shinyServer(function(input, output, session) {
             "Descriptive Data: Bivariate" = "AB",
             "Multiverse of Decision Steps" = "AD",
             "Decision Map of Individual Article" = "IV",
-            "Theoritical Model and Subtypes" = "TvS1",
+            "Theoretical Model and Subtypes" = "TvS1",
             "Language and Subtypes" = "TvS2",
-            "Subtype Prevalence" = "TvS3",
+            #"Subtype Prevalence" = "TvS3",
             "home"  # Default to home if no match
         )
         
@@ -183,7 +183,7 @@ shinyServer(function(input, output, session) {
 
 
     ###########################
-    ### Database ###
+    ### Dataset Exploration ###
     ###########################
 
     ### Output table of articles ###
@@ -314,7 +314,7 @@ shinyServer(function(input, output, session) {
 
 
     #############################################################
-    ###Explore the Datasets###
+    ###Multiverse of Decision Stepss###
     #############################################################
 
     ### Descriptive Data (Univariate) ###
@@ -963,16 +963,32 @@ shinyServer(function(input, output, session) {
     #############################################################
     ### Theory vs Subtype ###
     output$heatmap1 <- renderPlotly({
-        # Exclude 'Not applicable' from the Subtype_UniLabel column
+        # Add the Subtype1_Type column to count_df_theory based on Subtype_UniLabel
         filtered_count_df_theory <- count_df_theory %>%
-            filter(Subtype_UniLabel != 'Not applicable')
-        y_categories <- sort(unique(filtered_count_df_theory$Subtype_UniLabel))
+            filter(Subtype_UniLabel != 'Not applicable') %>%
+            mutate(Subtype1_Type = subtype_grouped$Subtype1_Type[match(Subtype_UniLabel, subtype_grouped$Subtype_UniLabel)])
+
+        # Sort Subtype_UniLabel by group and alphabetically within each group
+        filtered_count_df_theory <- filtered_count_df_theory %>%
+            arrange(Subtype1_Type, Subtype_UniLabel)
+
+        # Create a custom y-axis label with group names and add it to the dataframe
+        filtered_count_df_theory <- filtered_count_df_theory %>%
+            mutate(GroupedLabel = paste0(
+                '<span style="color:blue;">', Subtype1_Type, ':</span> ', Subtype_UniLabel
+            ))
+
+        # Extract y-axis categories
+        y_categories <- filtered_count_df_theory$GroupedLabel
+
+        # Extract x-axis categories
         x_categories <- sort(unique(filtered_count_df_theory$TheoryName))
 
+        # Create the heatmap
         plot_ly(
             data = filtered_count_df_theory,
             x = ~TheoryName,
-            y = ~Subtype_UniLabel,
+            y = ~GroupedLabel,
             z = ~Count,
             type = "heatmap",
             colors = colorRamp(c("white", "#0c6322")),
@@ -987,86 +1003,106 @@ shinyServer(function(input, output, session) {
             )
         ) %>%
         layout(
-            title = list(
-                text = "No. of Data Entries Yielding Specific Subtypes Per Theoretical Model",
-                font = list(size = 13, color = "black", family = "Arial", bold = TRUE)
-            ),
+            title = "No. of Data Entries Yielding Specific Subtypes Per Theoretical Model",
+            titlefont = list(size = 13, color = "black", family = "Arial", bold = TRUE),
             xaxis = list(
-                title = list(
-                    text = "Theoretical Model",
-                    font = list(size = 16, color = "black", family = "Arial", bold = TRUE)
-                ),
+                title = "Theoretical Model",
+                titlefont = list(size = 16, color = "black", family = "Arial", bold = TRUE),
                 tickangle = 90,
-                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),  # Apply to x-axis tick labels
+                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),
                 categoryorder = "array",
-                categoryarray = x_categories,  # Ensure x-axis is ordered alphabetically
+                categoryarray = x_categories,
                 tickmode = "array",
-                tickvals = x_categories,  # Ensure all x-axis labels are shown
+                tickvals = x_categories,
                 ticktext = x_categories
             ),
             yaxis = list(
-                title = list(
-                    text = "Subtype",
-                    font = list(size = 16, color = "black", family = "Arial", bold = TRUE)
-                ),
-                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),  # Apply to y-axis tick labels
+                title = "Subtype (Grouped by Type)",
+                titlefont = list(size = 16, color = "black", family = "Arial", bold = TRUE),
+                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),
                 categoryorder = "array",
-                categoryarray = y_categories,  # Ensure y-axis is ordered alphabetically
-                tickmode = "linear",
-                nticks = length(y_categories)  # Ensure all y-axis labels are shown
+                categoryarray = y_categories,
+                tickmode = "array",
+                tickvals = y_categories,
+                ticktext = y_categories,
+                tickformat = "html"  # Enable HTML formatting for y-axis labels
             ),
-            height = 1200,
-            margin = list(l = 25, r = 25, b = 300, t = 25)  # Adjust margins to give space for labels
+            margin = list(l = 300, r = 25, b = 100, t = 25)  # Adjust margins to give space for labels
         )
     })
 
-
     output$filtered_data_theory <- renderDT({
+        # Get the clicked data from the heatmap
         event_data <- event_data("plotly_click", source = "heatmap1")
         if (is.null(event_data)) {
             return(datatable(data.frame(Message = "Click on a cell to see details."), options = list(dom = 't')))
         }
         
+        # Extract the selected theory and subtype from the clicked cell
         selected_theory <- event_data$x
         selected_subtype <- event_data$y
         
+        # Remove HTML tags from the selected_subtype
+        selected_subtype <- str_replace_all(selected_subtype, "<[^>]+>", "")  # Remove HTML tags
+        selected_subtype <- str_split(selected_subtype, ": ", simplify = TRUE)[, 2]  # Extract only the subtype part
+        
+        # Find the Entry_No in subtype_data that matches the clicked subtype
+        matching_entry_nos <- subtype_data %>%
+            filter(Subtype_UniLabel == selected_subtype) %>%
+            pull(Entry_No)
+        
+        # Filter article_data based on the matching Entry_No and selected theory
         filtered_data <- article_data %>%
-            filter(TheoryName == selected_theory & 
-                apply(select(., matches("^Subtype.*UniLabel$")), 1, function(x) selected_subtype %in% x)) %>%
+            filter(Entry_No %in% matching_entry_nos & TheoryName == selected_theory) %>%
             select(Paper, DOI, TheoryName, UnifiedLabel_All, Prevalence_All)
         
         # Define custom column names
         custom_colnames <- c("Paper", "DOI", "Theory Name", "Subtypes (All)", "Prevalence (All)")
         setnames(filtered_data, old = names(filtered_data), new = custom_colnames)
         
+        # Render the filtered data as a datatable
         datatable(filtered_data, escape = FALSE,
-        #extensions = "FixedHeader",
-        style="bootstrap",
-        filter = 'top',
-        options = list(
-        dom = 'Bfrtip',
-        pageLength = 20,
-        scrollX=TRUE,
-        searching=TRUE,
-        ordering=TRUE
-        #fixedHeader = TRUE,
-        )
+            style = "bootstrap",
+            filter = 'top',
+            options = list(
+                dom = 'Bfrtip',
+                pageLength = 20,
+                scrollX = TRUE,
+                searching = TRUE,
+                ordering = TRUE
+            )
         )
     })
 
 
     ### Language vs Subtype ###
     output$heatmap2 <- renderPlotly({
-        # Exclude 'Not applicable' from the TheoryName column
+        # Add the Subtype1_Type column to count_df_language based on Subtype_UniLabel
         filtered_count_df_language <- count_df_language %>%
-            filter(Subtype_UniLabel != 'Not applicable')
-        y_categories <- sort(unique(filtered_count_df_language$Subtype_UniLabel))
+            filter(Subtype_UniLabel != 'Not applicable') %>%
+            mutate(Subtype1_Type = subtype_grouped$Subtype1_Type[match(Subtype_UniLabel, subtype_grouped$Subtype_UniLabel)])
+
+        # Sort Subtype_UniLabel by group and alphabetically within each group
+        filtered_count_df_language <- filtered_count_df_language %>%
+            arrange(Subtype1_Type, Subtype_UniLabel)
+
+        # Create a custom y-axis label with group names and add it to the dataframe
+        filtered_count_df_language <- filtered_count_df_language %>%
+            mutate(GroupedLabel = paste0(
+                '<span style="color:blue;">', Subtype1_Type, ':</span> ', Subtype_UniLabel
+            ))
+
+        # Extract y-axis categories
+        y_categories <- filtered_count_df_language$GroupedLabel
+
+        # Extract x-axis categories
         x_categories <- sort(unique(filtered_count_df_language$Subj_Lang))
 
+        # Create the heatmap
         plot_ly(
             data = filtered_count_df_language,
             x = ~Subj_Lang,
-            y = ~Subtype_UniLabel,
+            y = ~GroupedLabel,
             z = ~Count,
             type = "heatmap",
             colors = colorRamp(c("white", "#0c6322")),
@@ -1081,69 +1117,75 @@ shinyServer(function(input, output, session) {
             )
         ) %>%
         layout(
-            title = list(
-                text = "No. of Data Entries Yielding Specific Subtypes Across L1 of Participants",
-                font = list(size = 13, color = "black", family = "Arial", bold = TRUE)
-            ),
+            title = "No. of Data Entries Yielding Specific Subtypes Across L1 of Participants",
+            titlefont = list(size = 13, color = "black", family = "Arial", bold = TRUE),
             xaxis = list(
-                title = list(
-                    text = "L1 of Sample of Participants",
-                    font = list(size = 16, color = "black", family = "Arial", bold = TRUE)
-                ),
+                title = "L1 of Sample of Participants",
+                titlefont = list(size = 16, color = "black", family = "Arial", bold = TRUE),
                 tickangle = 90,
-                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),  # Apply to x-axis tick labels
+                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),
                 categoryorder = "array",
-                categoryarray = x_categories,  # Ensure x-axis is ordered alphabetically
+                categoryarray = x_categories,
                 tickmode = "array",
-                tickvals = x_categories,  # Ensure all x-axis labels are shown
+                tickvals = x_categories,
                 ticktext = x_categories
             ),
             yaxis = list(
-                title = list(
-                    text = "Subtype",
-                    font = list(size = 16, color = "black", family = "Arial", bold = TRUE)
-                ),
-                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),  # Apply to y-axis tick labels
+                title = "Subtype (Grouped by Type)",
+                titlefont = list(size = 16, color = "black", family = "Arial", bold = TRUE),
+                tickfont = list(size = 11, color = "black", family = "Arial", bold = TRUE),
                 categoryorder = "array",
-                categoryarray = y_categories,  # Ensure y-axis is ordered alphabetically
-                tickmode = "linear",
-                nticks = length(y_categories)  # Ensure all y-axis labels are shown
+                categoryarray = y_categories,
+                tickmode = "array",
+                tickvals = y_categories,
+                ticktext = y_categories,
+                tickformat = "html"  # Enable HTML formatting for y-axis labels
             ),
             height = 1200,
-            margin = list(l = 25, r = 25, b = 300, t = 25)  # Adjust margins to give space for labels
+            margin = list(l = 300, r = 25, b = 100, t = 25)  # Adjust margins to give space for labels
         )
     })
 
     output$filtered_data_lang <- renderDT({
+        # Get the clicked data from the heatmap
         event_data <- event_data("plotly_click", source = "heatmap2")
         if (is.null(event_data)) {
             return(datatable(data.frame(Message = "Click on a cell to see details."), options = list(dom = 't')))
         }
         
+        # Extract the selected language and subtype from the clicked cell
         selected_language <- event_data$x
         selected_subtype <- event_data$y
+
+        # Remove HTML tags from the selected_subtype
+        selected_subtype <- str_replace_all(selected_subtype, "<[^>]+>", "")  # Remove HTML tags
+        selected_subtype <- str_split(selected_subtype, ": ", simplify = TRUE)[, 2]  # Extract only the subtype part
         
+        # Find the Entry_No in subtype_data that matches the clicked subtype
+        matching_entry_nos <- subtype_data %>%
+            filter(Subtype_UniLabel == selected_subtype) %>%
+            pull(Entry_No)
+        
+        # Filter article_data based on the matching Entry_No and selected language
         filtered_data <- article_data %>%
-            filter(Subj_Lang == selected_language & 
-                apply(select(., matches("^Subtype.*UniLabel$")), 1, function(x) selected_subtype %in% x)) %>%
+            filter(Entry_No %in% matching_entry_nos & Subj_Lang == selected_language) %>%
             select(Paper, DOI, TheoryName, UnifiedLabel_All, Prevalence_All)
         
         # Define custom column names
         custom_colnames <- c("Paper", "DOI", "Theory Name", "Subtypes (All)", "Prevalence (All)")
         setnames(filtered_data, old = names(filtered_data), new = custom_colnames)
         
+        # Render the filtered data as a datatable
         datatable(filtered_data, escape = FALSE,
-        #extensions = "FixedHeader",
-        style="bootstrap",
-        filter = 'top',
-        options = list(
-        dom = 'Bfrtip',
-        pageLength = 20,
-        scrollX=TRUE,
-        searching=TRUE,
-        ordering=TRUE
-        #fixedHeader = TRUE,
-        )
+            style = "bootstrap",
+            filter = 'top',
+            options = list(
+                dom = 'Bfrtip',
+                pageLength = 20,
+                scrollX = TRUE,
+                searching = TRUE,
+                ordering = TRUE
+            )
         )
     })
 

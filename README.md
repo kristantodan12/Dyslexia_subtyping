@@ -1,1 +1,1 @@
-# Dyslexia_subtyping
+Link to the interactive app: [LINK](https://dyslexiaproject.shinyapps.io/profilingdyslexia/)

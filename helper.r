@@ -5,13 +5,33 @@ library(dplyr)
 ###Reading the data from excel files###
 #######################################
 # Define the file path
-file_path <- "Data/DD Subtyping_DAF_v.3.xlsx"
+file_path <- "Data/DD Subtyping_DAF_v.4.xlsx"
 
 # Read the description data
 description <- read_excel(file_path, sheet = "Description (Clean_For APP)")
 
 # Read the article data
 article_data <- read_excel(file_path, sheet = "RealDF (Clean_For APP) 2")
+
+# Read detailed subtype description
+subtype_data <- read_excel(file_path, sheet = "Subtype_Stats")
+
+# Modify Subtype_UniLabel to make it unique for entities in multiple groups
+subtype_data <- subtype_data %>%
+    group_by(Subtype_UniLabel) %>%
+    mutate(
+        Subtype_UniLabel = case_when(
+            n_distinct(Subtype1_Type) > 1 ~ paste(Subtype_UniLabel, Subtype1_Type),  # Append the group name if multiple Subtype1_Type values exist
+            TRUE ~ Subtype_UniLabel  # Keep it as is if all Subtype1_Type values are the same
+        )
+    ) %>%
+    ungroup()
+
+# Create a new dataframe with unique Subtype_UniLabel and their corresponding Subtype1_Type
+subtype_grouped <- subtype_data %>%
+    select(Subtype_UniLabel, Subtype1_Type) %>%
+    distinct() %>%
+    arrange(Subtype1_Type, Subtype_UniLabel)  # Sort by group and then alphabetically
 
 # Convert Year column to integer
 article_data <- article_data %>%
@@ -28,15 +48,18 @@ article_data <- article_data %>%
         Construct_All = paste(na.omit(c_across(matches("^Para.*Construct$"))[!c_across(matches("^Para.*Construct$")) %in% c("Not applicable")]), collapse = "; "),
         Measure_All = paste(na.omit(c_across(matches("^Para.*Measure$"))[!c_across(matches("^Para.*Measure$")) %in% c("Not applicable")]), collapse = "; "),
         Var_All = paste(na.omit(c_across(matches("^Para.*Var$"))[!c_across(matches("^Para.*Var$")) %in% c("Not applicable")]), collapse = "; "),
-        Sample_ForValidation_All = Sample_ForValidation_All <- paste(na.omit(c_across(starts_with("Sample_ForValidation_"))[!c_across(starts_with("Sample_ForValidation_")) %in% c("Not applicable")]), collapse = "; "),
+        Sample_ForValidation_All = paste(na.omit(c_across(starts_with("Sample_ForValidation_"))[!c_across(starts_with("Sample_ForValidation_")) %in% c("Not applicable")]), collapse = "; "),
         Standardised_All = paste(na.omit(c_across(matches("^Para.*Standardised$"))[!c_across(matches("^Para.*Standardised$")) %in% c("Not applicable")]), collapse = "; "),
         Indicator_All = paste(na.omit(c_across(matches("^Para.*Indicator$"))[!c_across(matches("^Para.*Indicator$")) %in% c("Not applicable")]), collapse = "; "),
         OutlierRemoval_All = paste(na.omit(c_across(matches("^Para.*OutlierRemoval$"))[!c_across(matches("^Para.*OutlierRemoval$")) %in% c("Not applicable")]), collapse = "; "),
         MissingDataTreat_All = paste(na.omit(c_across(matches("^Para.*MissingDataTreat$"))[!c_across(matches("^Para.*MissingDataTreat$")) %in% c("Not applicable")]), collapse = "; "),
-        Validation_Method_All = Sample_ForValidation_All <- paste(na.omit(c_across(starts_with("Validation_Method_"))[!c_across(starts_with("Validation_Method_")) %in% c("Not applicable")]), collapse = "; "),
-        Validation_SameSample_All = Sample_ForValidation_All <- paste(na.omit(c_across(starts_with("Validation_SameSample_"))[!c_across(starts_with("Validation_SameSample_")) %in% c("Not applicable")]), collapse = "; "),
-        Robustness_All = Sample_ForValidation_All <- paste(na.omit(c_across(starts_with("Robustness_"))[!c_across(starts_with("Robustness_")) %in% c("Not applicable")]), collapse = "; "),
-        UnifiedLabel_All = paste(na.omit(c_across(matches("^Subtype.*UniLabel$"))[!c_across(matches("^Subtype.*UniLabel$")) %in% c("Not applicable")]), collapse = "; "),
+        Validation_Method_All = paste(na.omit(c_across(starts_with("Validation_Method_"))[!c_across(starts_with("Validation_Method_")) %in% c("Not applicable")]), collapse = "; "),
+        Validation_SameSample_All = paste(na.omit(c_across(starts_with("Validation_SameSample_"))[!c_across(starts_with("Validation_SameSample_")) %in% c("Not applicable")]), collapse = "; "),
+        Robustness_All = paste(na.omit(c_across(starts_with("Robustness_"))[!c_across(starts_with("Robustness_")) %in% c("Not applicable")]), collapse = "; "),
+        UnifiedLabel_All = paste(
+            unique(subtype_data$Subtype_UniLabel[subtype_data$Entry_No == Entry_No]),
+            collapse = "; "
+        ),
         Prevalence_All = paste(na.omit(sprintf("%.2f", as.numeric(c_across(matches("^Subtype.*Prevalence$"))[!c_across(matches("^Subtype.*Prevalence$")) %in% c("Not applicable")]))), collapse = "; ")
     ) %>%
     ungroup() %>%
@@ -52,7 +75,7 @@ article_data <- article_data %>%
         Validation_Method_All = ifelse(Validation_Method_All == "", "Not applicable", Validation_Method_All),
         Validation_SameSample_All = ifelse(Validation_SameSample_All == "", "Not applicable", Validation_SameSample_All),
         Robustness_All = ifelse(Robustness_All == "", "Not applicable", Robustness_All),
-        UnifiedLabel_All = ifelse(UnifiedLabel_All == "", "Not applicable", UnifiedLabel_All),
+        UnifiedLabel_All = gsub("Not applicable(; )?|(; )?Not applicable$", "", UnifiedLabel_All),
         Prevalence_All = ifelse(Prevalence_All == "", "Not applicable", Prevalence_All)
     )
 
@@ -110,15 +133,20 @@ unique_robustness <- unique(unlist(article_data %>% select(matches("^Robustness_
 #######################################
 
 ### Theory vs Subtype ###
+# Define unique subtypes based on the Subtype_UniLabel column in subtype_grouped
+unique_subtypes_ <- unique(subtype_grouped$Subtype_UniLabel)
+
 # Create a matrix to store counts
-count_matrix_theory <- matrix(0, nrow = length(unique_theories), ncol = length(unique_subtypes),
-                       dimnames = list(unique_theories, unique_subtypes))
+count_matrix_theory <- matrix(0, nrow = length(unique_theories), ncol = length(unique_subtypes_),
+                       dimnames = list(unique_theories, unique_subtypes_))
 
 # Populate the matrix with counts
 for (theory in unique_theories) {
-  for (subtype in unique_subtypes) {
-    count_matrix_theory[theory, subtype] <- sum(article_data$TheoryName == theory & 
-                                         apply(article_data %>% select(matches("^Subtype.*UniLabel$")), 1, function(x) subtype %in% x))
+  for (subtype in unique_subtypes_) {
+    count_matrix_theory[theory, subtype] <- sum(
+      article_data$TheoryName == theory & 
+      sapply(strsplit(article_data$UnifiedLabel_All, "; "), function(x) subtype %in% x)
+    )
   }
 }
 
@@ -137,14 +165,16 @@ count_df_theory <- count_df_theory[order(count_df_theory$TheoryName, count_df_th
 unique_languages <- unique(article_data$Subj_Lang)
 
 # Create a matrix to store counts
-count_matrix_language <- matrix(0, nrow = length(unique_languages), ncol = length(unique_subtypes),
-                       dimnames = list(unique_languages, unique_subtypes))
+count_matrix_language <- matrix(0, nrow = length(unique_languages), ncol = length(unique_subtypes_),
+                       dimnames = list(unique_languages, unique_subtypes_))
 
 # Populate the matrix with counts
 for (language in unique_languages) {
-  for (subtype in unique_subtypes) {
-    count_matrix_language[language, subtype] <- sum(article_data$Subj_Lang == language & 
-                                         apply(article_data %>% select(matches("^Subtype.*UniLabel$")), 1, function(x) subtype %in% x))
+  for (subtype in unique_subtypes_) {
+    count_matrix_language[language, subtype] <- sum(
+      article_data$Subj_Lang == language & 
+      sapply(strsplit(article_data$UnifiedLabel_All, "; "), function(x) subtype %in% x)
+    )
   }
 }
 
@@ -158,6 +188,5 @@ count_df_language$Subtype_UniLabel <- factor(count_df_language$Subtype_UniLabel,
 # Reorder Subj_Lang and Subtype_UniLabel alphabetically
 count_df_language <- count_df_language[order(count_df_language$Subj_Lang, count_df_language$Subtype_UniLabel), ]
 
-### Subtype and Prevalence ### 
 
 

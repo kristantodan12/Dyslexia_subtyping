@@ -1,3 +1,6 @@
 .lintr
 *.Rproj
 rsconnect/
+*.Rproj.user
+.Rhistory
+.RData
