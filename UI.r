@@ -298,7 +298,7 @@ ui <- shinyUI(navbarPage(
                         ),
 
 
-                        tabPanel("Multiverse of Decision Steps", value = "AD",
+                        tabPanel("Subsetting the Multiverse", value = "AD",
                             sidebarLayout(
                                 sidebarPanel(
                                     shiny::HTML("<h5>This tab helps you identify the papers which undertook your selected combination 

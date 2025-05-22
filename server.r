@@ -73,7 +73,7 @@ shinyServer(function(input, output, session) {
                 visUpdateEdges(edges = subedges)
         } else if (input$node_clicked == "Multiverse of Decision Steps") {
             subnodes <- data.frame(id = 9:12, 
-                                label = c("Descriptive Data: Univariate", "Descriptive Data: Bivariate", "Multiverse of Decision Steps", "Decision Map of Individual Article"), 
+                                label = c("Descriptive Data: Univariate", "Descriptive Data: Bivariate", "Subsetting the Multiverse", "Decision Map of Individual Article"), 
                                 value = c(30, 30, 30, 30), 
                                 title = "Click to see information", 
                                 shape = "dot", 
@@ -109,7 +109,7 @@ shinyServer(function(input, output, session) {
             "Create Your Table" = "Create your own subset of the dataset.",
             "Descriptive Data: Univariate" = "Explore the descriptive data of each of the variables in the dataset.",
             "Descriptive Data: Bivariate" = "Select and explore the descriptive data between two of the variables in the dataset.",
-            "Multiverse of Decision Steps" = "Explore the decision steps and options in the multiverse of developmental dyslexia subtyping.",
+            "Subsetting the Multiverse" = "Explore the predefined subset of decision steps and options in the multiverse of developmental dyslexia subtyping.",
             "Decision Map of Individual Article" = "Examine the decision map of subtyping dyslexia in a selected individual paper.",
             "Theoretical Model and Subtypes" = "Examine the relationship between the theoretical models for subtyping and the dyslexia subtypes and their prevalence.",
             "Language and Subtypes" = "Examine the relationship between the language of the participants and the respective dyslexia subtypes and their prevalence.",
@@ -138,7 +138,7 @@ shinyServer(function(input, output, session) {
             "Create Your Table" = "YT",
             "Descriptive Data: Univariate" = "AU",
             "Descriptive Data: Bivariate" = "AB",
-            "Multiverse of Decision Steps" = "AD",
+            "Subsetting the Multiverse" = "AD",
             "Decision Map of Individual Article" = "IV",
             "Theoretical Model and Subtypes" = "TvS1",
             "Language and Subtypes" = "TvS2",

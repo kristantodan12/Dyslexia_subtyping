@@ -4,3 +4,4 @@ rsconnect/
 *.Rproj.user
 .Rhistory
 .RData
+.Rproj.user
