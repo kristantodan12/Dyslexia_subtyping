@@ -218,7 +218,7 @@ ui <- shinyUI(navbarPage(
                                         shiny::HTML("<h5>Select <b>one or more variable categories</b> from the dropdown list:</h5>"),
                                         uiOutput("name_dropdown"), # Dynamic dropdown based on group selection
                                         # Description text for the CLEAR button
-                                        shiny::HTML("<h5>S<b>From the variable list generated on the right, click the red “Delete” 
+                                        shiny::HTML("<h5><b>From the variable list generated on the right, click the red “Delete” 
                                         button if you wish to remove a selected variable. Click the CLEAR button below to reset your selection:</b> </h5>"),
                                         actionButton("clear_button", "DELETE", style = "color: red"),
                                         br(), br(),  # Add more space between buttons
