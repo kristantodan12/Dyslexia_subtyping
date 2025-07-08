@@ -32,7 +32,7 @@ ui <- shinyUI(navbarPage(
         theme = "bootstrap.css",
         collapsible = TRUE,
         inverse = TRUE,
-        windowTitle = "Interactive App for Dyslexia Subtyping Analytical Decisions",
+        windowTitle = "Interactive App for Mapping Dyslexia Subtyping Methods",
         position = "fixed-top",
         header = tags$style(
             HTML("
@@ -140,10 +140,10 @@ ui <- shinyUI(navbarPage(
                 width = 12,
                 wellPanel(
                 style = "background-color: #f0f0f0; color: #000; padding: 10px; border: 1px solid #ddd;",
-                shiny::tags$h4("The Multiverse of Developmental Dyslexia Subtyping Methods", style = "color: #000;"),
-                shiny::tags$h4("Exploring the analytical decisions in dyslexia subtyping",
-                                style = "color: #000; font-weight: normal;"),
-                shiny::tags$h5("This interactive Shiny app allows you to explore the decision steps for subtyping developmental dyslexia based on a systematic review of the literature.",
+                shiny::tags$h4("The Multiverse of Developmental Dyslexia Subtyping Methods:", style = "color: #000;"),
+                shiny::tags$h4("The 'Mapping Dyslexia Subtypes' - MAP-DyS - app for Analytical Decision-Making",
+                                style = "color: #0d5f1fce; font-weight: normal;"),
+                shiny::tags$h5("This MAP-DyS app allows you to explore the decision steps for subtyping developmental dyslexia based on a systematic review of the literature.",
                                 style = "color: #000; font-weight: normal;"),
                 shiny::tags$h5("Click on the node below to explore the features of this app:", style = "color: #000;"),
                 shiny::HTML("<br>")
