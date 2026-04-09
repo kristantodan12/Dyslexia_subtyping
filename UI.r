@@ -204,7 +204,7 @@ ui <- shinyUI(navbarPage(
                             )
                         ),
                         tabPanel("Create Your Table", value = "YT",
-                            shiny::HTML("<h5><b>In this tab, you may create your own subset of the dataset.</b></h5>"),
+                            shiny::HTML("<h5><b>In this module, you may create your own subset of the dataset.</b></h5>"),
                                 sidebarLayout(
                                     sidebarPanel(
                                         # Description text for the checkboxes
@@ -301,7 +301,7 @@ ui <- shinyUI(navbarPage(
                         tabPanel("Subsetting the Multiverse", value = "AD",
                             sidebarLayout(
                                 sidebarPanel(
-                                    shiny::HTML("<h5>This tab helps you identify the papers which undertook your selected combination 
+                                    shiny::HTML("<h5>This module helps you identify the papers which undertook your selected combination 
                                     of variables and options for dyslexia subtyping. To create your combination of variables and options, 
                                     first select a variable category and a variable from the first dropdown list. Then, select an option of 
                                     your chosen variable from the second dropdown list, and click “Add Selection”. For variables where

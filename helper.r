@@ -5,7 +5,7 @@ library(dplyr)
 ###Reading the data from excel files###
 #######################################
 # Define the file path
-file_path <- "Data/DD Subtyping_DAF_v.4.xlsx"
+file_path <- "Scripts/Data/DD Subtyping_DAF_v.4.xlsx"
 
 # Read the description data
 description <- read_excel(file_path, sheet = "Description (Clean_For APP)")
